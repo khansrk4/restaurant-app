@@ -2,9 +2,6 @@
 
 This is a restaurant food ordeing demo app
 
-## Available Scripts
-
-In the project directory,
 
 ## Please clone this project first, then run:
 
