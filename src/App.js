@@ -1,23 +1,31 @@
 import "./App.css";
-import Button from "@mui/material/Button";
-import MediaCard from "./MediaCard";
-import { StyledEngineProvider } from "@mui/material/styles";
-import ScrollableButtons from "./Buttons/ScrollableButtons";
-import Card from "@mui/material/Card";
-import CartCard from "./CartCard";
+import * as React from "react";
+import MenuItems from "./Components/MenuItems/MenuItems";
+import CartCard from "./Components/CartCard/CartCard";
 import store from "./utils/store";
-import { Provider, useSelector } from "react-redux";
+import { Provider } from "react-redux";
+import { createMulitSelect } from "./utils/helper";
+import { COLD_APPETIZERS } from "./data/restaurantData";
 
 function App() {
+  const [selectedCard, setSelectedCard] = React.useState(
+    createMulitSelect(COLD_APPETIZERS)
+  );
   return (
     <Provider store={store}>
       <div className="App">
         <div className="Container">
           <div className="Container1">
-            <MediaCard />
+            <MenuItems
+              selectedCard={selectedCard}
+              setSelectedCard={setSelectedCard}
+            />
           </div>
           <div className="Container2">
-            <CartCard />
+            <CartCard
+              selectedCard={selectedCard}
+              setSelectedCard={setSelectedCard}
+            />
           </div>
         </div>
       </div>

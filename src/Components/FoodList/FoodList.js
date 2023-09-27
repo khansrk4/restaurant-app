@@ -1,4 +1,3 @@
-// src/components/FoodList.js
 import React from "react";
 import {
   List,

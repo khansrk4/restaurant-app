@@ -1,23 +1,36 @@
 import * as React from "react";
 import AspectRatio from "@mui/joy/AspectRatio";
-import Button from "@mui/joy/Button";
 import Card from "@mui/joy/Card";
 import CardContent from "@mui/joy/CardContent";
 import IconButton from "@mui/joy/IconButton";
 import Typography from "@mui/joy/Typography";
 import BookmarkAdd from "@mui/icons-material/BookmarkAddOutlined";
-import { RESTAURANT_DETAILS } from "./data/restaurantData";
-import List from "@mui/material/List";
+import { RESTAURANT_DETAILS } from "../../data/restaurantData";
 import ListItem from "@mui/material/ListItem";
-import Divider from "@mui/material/Divider";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { Divider } from "@mui/material";
+import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
+import { removeItem, removeAmount } from "../../utils/cartSlice";
 
-export default function CartCard() {
+export default function CartCard({ selectedCard, setSelectedCard }) {
+  const dispatch = useDispatch();
   const data = useSelector((store) => store.cart);
-  console.log(data);
+  const amount = useSelector((store) => store.cart.totalAmount);
+
+  const deleteItem = (item) => {
+    const res = { ...selectedCard };
+    const ls = {
+      ...res,
+      [item.id]: res[item.id] ? false : true,
+    };
+
+    setSelectedCard(ls);
+    dispatch(removeItem(item));
+    dispatch(removeAmount(25));
+  };
 
   return (
     <Card>
@@ -41,10 +54,11 @@ export default function CartCard() {
       </AspectRatio>
       <span style={{ fontWeight: "700" }}>{RESTAURANT_DETAILS.name}</span>
       <span>{RESTAURANT_DETAILS.address}</span>
-      <span>{RESTAURANT_DETAILS.type}</span>
-      <Card>
-        {data.items.map((item) => (
-          <ListItem alignItems="flex-start">
+      <span style={{ fontWeight: "bold" }}>{RESTAURANT_DETAILS.type}</span>
+
+      {data.items.map((item, index) => (
+        <>
+          <ListItem alignItems="flex-start" key={index}>
             <ListItemAvatar>
               <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
             </ListItemAvatar>
@@ -66,37 +80,32 @@ export default function CartCard() {
                     component="span"
                     variant="body2"
                     color="text.primary"
-                  >
-                    {/* <Checkbox
-                  sx={{
-                    "& .MuiSvgIcon-root": { borderRadius: "50% " },
-                  }}
-                  checked={selectedCard === item.id ? check : false}
-                  onClick={() => handleCheckClick(item)}
-                /> */}
-                  </Typography>
+                  ></Typography>
                 </>
               }
             />
+            <div
+              onClick={() => {
+                deleteItem(item);
+              }}
+            >
+              <DeleteForeverOutlinedIcon />
+            </div>
           </ListItem>
-        ))}
-      </Card>
+          <Divider />
+        </>
+      ))}
+
       <CardContent orientation="horizontal">
         <div>
-          <Typography level="body-xs">Total price:</Typography>
-          <Typography fontSize="lg" fontWeight="lg">
-            $2,900
+          <Typography level="body-xs">
+            Total price:
+            <Typography
+              fontSize="14px"
+              fontWeight="700"
+            >{` AED ${amount}`}</Typography>
           </Typography>
         </div>
-        <Button
-          variant="solid"
-          size="md"
-          color="primary"
-          aria-label="Explore Bahamas Islands"
-          sx={{ ml: "auto", alignSelf: "center", fontWeight: 600 }}
-        >
-          Explore
-        </Button>
       </CardContent>
     </Card>
   );

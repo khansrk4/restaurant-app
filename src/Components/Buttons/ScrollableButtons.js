@@ -1,12 +1,16 @@
-// src/components/ScrollableButtons.js
 import React from "react";
-import { FOOD_CATEGORY } from "../data/restaurantData";
-import { selectItemType } from "../utils/cartSlice";
+import { FOOD_CATEGORY } from "../../data/restaurantData";
+import { selectItemType } from "../../utils/cartSlice";
 import "./ScrollableButtons.css";
 import { useDispatch } from "react-redux";
 
 const ScrollableButtons = () => {
+  const [buttonClicked, setButtonClicked] = React.useState(0);
   const dispatch = useDispatch();
+  const handleButtonClick = (item) => {
+    setButtonClicked(item.id);
+    dispatch(selectItemType(item.category));
+  };
   return (
     <div
       style={{
@@ -20,10 +24,13 @@ const ScrollableButtons = () => {
         zIndex: 999,
       }}
     >
-      {FOOD_CATEGORY.map((item) => (
+      {FOOD_CATEGORY.map((item, index) => (
         <button
-          className="btnContainer"
-          onClick={() => dispatch(selectItemType(item.category))}
+          key={index}
+          className={
+            item.id === buttonClicked ? "btnContainerClicked" : "btnContainer"
+          }
+          onClick={() => handleButtonClick(item)}
         >
           <div>{item.category}</div>
         </button>

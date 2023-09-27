@@ -1,0 +1,16 @@
+.btnContainer{
+    color: #410DEB ;
+    border-color: #410DEB;
+    background-color: white;
+    border-radius: 24px;
+    padding: 8px 22px;
+    font-size: 12px;
+}
+
+.btnContainerClicked{
+    background-color:  #410DEB ;
+    color: white;
+    border-radius: 24px;
+    padding: 8px 22px;
+    font-size: 12px;
+}
